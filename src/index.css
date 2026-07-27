@@ -1,0 +1,189 @@
+/* =========================================================
+   WEATHERSTAR THEME
+   1980s NWS / cable-weather-channel look — color & type only.
+   No glow/scanline/flicker effects: the CRT itself provides those.
+   Drop this file in your React app and `import './weatherstar-theme.css'`
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+:root, html, body, #root {
+  min-height: 100%;
+}
+
+html, body {
+  margin: 0;
+  background: #3236a8;
+  color: #f2f3ff;
+  font-family: 'VT323', 'Share Tech Mono', 'Courier New', monospace;
+}
+
+:root {
+  /* ---- palette ---- */
+  --wx-bg:          #3236a8;   /* main screen field */
+  --wx-bg-light:    #4448c4;   /* raised panel / highlight band */
+  --wx-rule:        #aab0f0;   /* thin double-line rules */
+  --wx-text:        #f2f3ff;   /* primary text */
+  --wx-text-dim:    #c7cbf5;   /* secondary / muted text */
+  --wx-cyan:        #6be3ff;   /* accent - headers, clock */
+  --wx-amber:       #ffcf4d;   /* accent - warnings, emphasis */
+  --wx-green:       #7cffb2;   /* accent - "clear/good" readings */
+
+  /* ---- type ---- */
+  --wx-font: 'VT323', 'Share Tech Mono', 'Courier New', monospace;
+  --wx-tracking: 0.04em;
+}
+
+/* ---------------------------------------------------------
+   Screen — flat color field, no gradients or shadows
+   --------------------------------------------------------- */
+.wx-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--wx-bg);
+  color: var(--wx-text);
+  font-family: var(--wx-font);
+  letter-spacing: var(--wx-tracking);
+  text-transform: uppercase;
+}
+
+/* ---------------------------------------------------------
+   Header bar — "NAT'L WEATHER SERVICE FORECAST"
+   --------------------------------------------------------- */
+.wx-header {
+  padding: 14px 20px 10px;
+  font-size: 22px;
+  color: var(--wx-cyan);
+  border-bottom: 2px double var(--wx-rule);
+  letter-spacing: 0.12em;
+  font-family: var(--wx-font);
+}
+
+/* ---------------------------------------------------------
+   Body — the big forecast text
+   --------------------------------------------------------- */
+.wx-body {
+  padding: 24px 22px;
+  min-height: 180px;
+  display: grid;
+  gap: 18px;
+}
+
+.wx-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.forecast {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.forecast-card {
+  border-top: 1px solid var(--wx-rule);
+  padding: 14px 16px;
+}
+
+.forecast-card h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: var(--wx-cyan);
+}
+
+.forecast-card p {
+  margin: 4px 0;
+  color: var(--wx-text);
+}
+
+.wx-label {
+  font-size: 0.85rem;
+  color: var(--wx-text-dim);
+  letter-spacing: 0.18em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.wx-value {
+  font-size: 2rem;
+  line-height: 1.05;
+  color: var(--wx-text);
+  font-family: var(--wx-font);
+}
+
+.wx-value-large {
+  font-size: 5rem;
+  line-height: 1;
+  color: var(--wx-text);
+  font-family: var(--wx-font);
+}
+
+.wx-subvalue {
+  margin-top: 10px;
+  color: var(--wx-text-dim);
+  font-size: 1rem;
+}
+
+.wx-body .wx-emphasis {
+  color: var(--wx-amber);
+}
+
+/* ---------------------------------------------------------
+   Footer / status bar — date, clock, wind readout
+   --------------------------------------------------------- */
+.wx-footer {
+  border-top: 2px double var(--wx-rule);
+  padding: 8px 20px 14px;
+  font-size: 20px;
+  color: var(--wx-text-dim);
+  font-family: var(--wx-font);
+}
+
+.wx-footer .wx-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.wx-footer .wx-clock {
+  color: var(--wx-cyan);
+}
+
+.wx-footer .wx-readout {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.wx-footer .wx-readout-value {
+  color: var(--wx-green);
+}
+
+/* ---------------------------------------------------------
+   Utility classes
+   --------------------------------------------------------- */
+.wx-eyebrow {
+  font-size: 16px;
+  color: var(--wx-text-dim);
+  letter-spacing: 0.15em;
+}
+
+.wx-divider {
+  border: none;
+  border-top: 2px double var(--wx-rule);
+  margin: 10px 0;
+}
+
+/* on real WeatherSTAR units the clock's AM/PM segment blinks —
+   this is a data-display convention, not a CRT effect, so it's
+   left in as an opt-in utility */
+.wx-blink {
+  animation: wx-blink 1s steps(1) infinite;
+}
+@keyframes wx-blink {
+  50% { opacity: 0.2; }
+}
