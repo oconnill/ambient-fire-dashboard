@@ -21,7 +21,8 @@ export default function App() {
   }
 
   return (
-    <div className="wx-screen">
+    <div className="tv-dashboard">
+      <div className="wx-screen">
       <header className="wx-header">
         <h1>NAT'L WEATHER SERVICE FORECAST</h1>
       </header>
@@ -50,6 +51,7 @@ export default function App() {
         {forecast ? <Forecast forecast={forecast} /> : null}
       </main>
       <Footer weather={weather} />
+      </div>
     </div>
   );
 }
