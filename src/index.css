@@ -1,6 +1,6 @@
 /* =========================================================
-   WEATHERSTAR THEME
-   1980s NWS / cable-weather-channel look — color & type only.
+   WEATHERSTAR THEME — 13" 4:3 CRT edition
+   Color, type, and spacing tuned for composite-video legibility.
    No glow/scanline/flicker effects: the CRT itself provides those.
    Drop this file in your React app and `import './weatherstar-theme.css'`
    ========================================================= */
@@ -16,22 +16,30 @@ html, body {
   background: #3236a8;
   color: #f2f3ff;
   font-family: 'VT323', 'Share Tech Mono', 'Courier New', monospace;
+  /* Root size scales with viewport height rather than a fixed px value,
+     so every rem-based size below stays legible regardless of what
+     resolution the CRT / scan converter actually renders at. */
+  font-size: clamp(16px, 2.6vh, 26px);
 }
 
 :root {
   /* ---- palette ---- */
   --wx-bg:          #3236a8;   /* main screen field */
   --wx-bg-light:    #4448c4;   /* raised panel / highlight band */
-  --wx-rule:        #aab0f0;   /* thin double-line rules */
+  --wx-rule:        #aab0f0;   /* rules — kept thick, see below */
   --wx-text:        #f2f3ff;   /* primary text */
   --wx-text-dim:    #c7cbf5;   /* secondary / muted text */
-  --wx-cyan:        #6be3ff;   /* accent - headers, clock */
-  --wx-amber:       #ffcf4d;   /* accent - warnings, emphasis */
-  --wx-green:       #7cffb2;   /* accent - "clear/good" readings */
+  --wx-cyan:        #6be3ff;   /* accent - large headers, clock only */
+  --wx-amber:       #ffcf4d;   /* accent - large emphasis only */
+  --wx-green:       #7cffb2;   /* accent - large "clear/good" readings only */
 
   /* ---- type ---- */
   --wx-font: 'VT323', 'Share Tech Mono', 'Courier New', monospace;
   --wx-tracking: 0.04em;
+
+  /* ---- CRT-safe geometry ---- */
+  --wx-rule-width: 4px;   /* thin lines shimmer on interlace — keep this chunky */
+  --wx-safe-margin: 9%;   /* title-safe area; CRTs overscan and crop the edges */
 }
 
 /* ---------------------------------------------------------
@@ -42,7 +50,7 @@ html, body {
   width: min(100vw, calc(100dvh * 4 / 3));
   height: 100dvh;
   margin: 0 auto;
-  padding: 5%;
+  padding: var(--wx-safe-margin);
   overflow: hidden;
 }
 
@@ -61,10 +69,10 @@ html, body {
    Header bar — "NAT'L WEATHER SERVICE FORECAST"
    --------------------------------------------------------- */
 .wx-header {
-  padding: 14px 20px 10px;
-  font-size: 22px;
+  padding: 0.9rem 1.2rem 0.7rem;
+  font-size: 1.5rem;
   color: var(--wx-cyan);
-  border-bottom: 2px double var(--wx-rule);
+  border-bottom: var(--wx-rule-width) double var(--wx-rule);
   letter-spacing: 0.12em;
   font-family: var(--wx-font);
 }
@@ -73,67 +81,73 @@ html, body {
    Body — the big forecast text
    --------------------------------------------------------- */
 .wx-body {
-  padding: 24px 22px;
+  padding: 1.4rem 1.2rem;
   min-height: 180px;
   display: grid;
-  gap: 18px;
+  gap: 1.1rem;
 }
 
 .wx-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.1rem;
 }
 
 .forecast {
+  /* capped at 2 columns — more than that and each card gets too small
+     to read from viewing distance on a 13" tube */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 16px;
-  margin-top: 18px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1.1rem;
 }
 
 .forecast-card {
-  border-top: 1px solid var(--wx-rule);
-  padding: 14px 16px;
+  border-top: var(--wx-rule-width) solid var(--wx-rule);
+  padding: 0.9rem 1rem;
 }
 
 .forecast-card h3 {
-  margin: 0 0 8px;
-  font-size: 1rem;
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
   color: var(--wx-cyan);
 }
 
 .forecast-card p {
-  margin: 4px 0;
+  margin: 0.25rem 0;
   color: var(--wx-text);
+  font-size: 1.1rem;
 }
 
 .wx-label {
-  font-size: 0.85rem;
+  /* small text stays white/dim, not a saturated accent color —
+     composite video's color channel is lower-res than brightness,
+     so fine colored text smears more than fine white text does */
+  font-size: 1.1rem;
   color: var(--wx-text-dim);
-  letter-spacing: 0.18em;
-  margin-bottom: 10px;
+  letter-spacing: 0.16em;
+  margin-bottom: 0.6rem;
   text-transform: uppercase;
 }
 
 .wx-value {
-  font-size: 2rem;
+  font-size: 2.4rem;
   line-height: 1.05;
   color: var(--wx-text);
   font-family: var(--wx-font);
 }
 
 .wx-value-large {
-  font-size: 5rem;
+  font-size: 5.5rem;
   line-height: 1;
   color: var(--wx-text);
   font-family: var(--wx-font);
 }
 
 .wx-subvalue {
-  margin-top: 10px;
+  margin-top: 0.6rem;
   color: var(--wx-text-dim);
-  font-size: 1rem;
+  font-size: 1.15rem;
 }
 
 .wx-body .wx-emphasis {
@@ -144,9 +158,9 @@ html, body {
    Footer / status bar — date, clock, wind readout
    --------------------------------------------------------- */
 .wx-footer {
-  border-top: 2px double var(--wx-rule);
-  padding: 8px 20px 14px;
-  font-size: 20px;
+  border-top: var(--wx-rule-width) double var(--wx-rule);
+  padding: 0.6rem 1.2rem 0.9rem;
+  font-size: 1.25rem;
   color: var(--wx-text-dim);
   font-family: var(--wx-font);
 }
@@ -163,9 +177,9 @@ html, body {
 
 .wx-footer .wx-readout {
   display: flex;
-  gap: 24px;
+  gap: 1.6rem;
   width: 100%;
-  margin-top: 4px;
+  margin-top: 0.35rem;
 }
 
 .wx-footer .wx-readout-value {
@@ -176,15 +190,15 @@ html, body {
    Utility classes
    --------------------------------------------------------- */
 .wx-eyebrow {
-  font-size: 16px;
+  font-size: 1.1rem;
   color: var(--wx-text-dim);
   letter-spacing: 0.15em;
 }
 
 .wx-divider {
   border: none;
-  border-top: 2px double var(--wx-rule);
-  margin: 10px 0;
+  border-top: var(--wx-rule-width) double var(--wx-rule);
+  margin: 0.7rem 0;
 }
 
 /* on real WeatherSTAR units the clock's AM/PM segment blinks —
